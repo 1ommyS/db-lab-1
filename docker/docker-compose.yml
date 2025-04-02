@@ -1,0 +1,3 @@
+﻿include:
+  - './postgres/docker-compose.postgres.yml'
+  - './networks/docker-compose.networks.yml'

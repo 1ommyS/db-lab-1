@@ -1,0 +1,38 @@
+﻿services:
+  postgres-db:
+    container_name: postgresDb
+    image: postgres:16.0
+    environment:
+      POSTGRES_USER: dblab
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: dblab
+    healthcheck:
+      test: /usr/bin/pg_isready
+      interval: 5s
+      timeout: 10s
+      retries: 120
+    ports:
+      - '9432:5432'
+    networks:
+      - shared
+
+  liquibase-migrations:
+    container_name: migrations
+    image: liquibase/liquibase:4.29
+    depends_on:
+      - postgres-db
+    command:
+      - --searchPath=/changesets
+      - --changelog-file=db.changelog-master.yaml
+      - --driver=org.postgresql.Driver
+      - --url=jdbc:postgresql://postgresDb:5432/dblab
+      - --username=dblab
+      - --password=password
+      - update
+    volumes:
+      - ./changelog:/changesets
+    networks:
+      - shared
+
+volumes:
+  postgres-data:
