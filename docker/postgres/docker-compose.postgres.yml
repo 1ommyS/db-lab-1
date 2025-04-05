@@ -1,7 +1,7 @@
 ﻿services:
   postgres-db:
     container_name: postgresDb
-    image: postgres:16.0
+    image: banhmysuawx/postgres-pgbigm:15-alpine
     environment:
       POSTGRES_USER: dblab
       POSTGRES_PASSWORD: password
